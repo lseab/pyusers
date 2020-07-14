@@ -7,9 +7,11 @@ Pyusers is a simple backend implemented in python that allows a user to register
 - the project was developed with python 3.7
 - in its current form, the project is not so much a backend as a database api, since sessions are not implemented 
 - user data is stored in an sqlite database for simplicity
+- passwords are encrypted using the PBKDF2 key-derivation function, which has a sliding computational cost. The chosen hashing algorithm is SHA256. With 100000 iterations, the encryption takes ~100ms, which is perfectly acceptable for user authentication and registration, and helps prevent against brute force attacks. 
 
 ### To do:
 - attach a web server to the application
+- implement sessions (with cookies for example)
 - add an activation link to the confirmation email and route the request back to the application when the link is clicked
 
 ### Set up:
