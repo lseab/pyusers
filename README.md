@@ -30,11 +30,15 @@ Activate it
 ```console
 $ source pyusers/bin/activate
 ```
-Install the packages into it from the requirements file
+Install the packages
 ```console
-(pyusers) $ pip install -r requirements.txt
+(pyusers) $ make install
+```
+Create the database
+```console
+(pyusers) $ make migrate
 ```
 Run the tests with pytest
 ```console
-(pyusers) $ pytest tests.py
+(pyusers) $ make tests
 ```
