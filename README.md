@@ -1,5 +1,6 @@
 # pyusers
-Experiments with user registration and authentication in python
+Experiments with user registration and authentication in python.
+
 Pyusers is a simple backend implemented in python that allows a user to register with their email and password of choice, after which they receive a confirmation email. Registered users can authenticate with the application by entering their username and password. If they enter a wrong password a certain number of times consecutively, their account will be locked. After a certain configurable amount of time, they will be free to authenticate again.
 
 ### Notes and assumptions:
