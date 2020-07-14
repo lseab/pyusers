@@ -32,7 +32,7 @@ $ source pyusers/bin/activate
 ```
 Install the packages
 ```console
-(pyusers) $ make install
+(pyusers) $ make install-test
 ```
 Create the database
 ```console
