@@ -1,7 +1,8 @@
 import hashlib
 import os
-from . import db_client
-from .exceptions import EmailInUse, InvalidEmail
+from pyuser.clients import db_client
+from pyuser.exceptions import EmailInUse, InvalidEmail
+from sqlite3.dbapi2 import Cursor
 
 
 class User:
@@ -19,31 +20,42 @@ class User:
         return f"User('{self.last_name}', '{self.first_name}')"
 
     @property
-    def lock_time(self):
+    def lock_time(self) -> int:
         return self._lock_time
 
     @lock_time.setter
-    def lock_time(self, lock_time):
+    def lock_time(self, lock_time) -> None:
+        """
+        Automatically updates database field on set.
+        """
         db_client.update_field(self.table_name, ('lock_time', lock_time), ('email', self.email))
         self._lock_time = lock_time
 
     @property
-    def login_attempts(self):
+    def login_attempts(self) -> int:
         return self._login_attempts
 
     @login_attempts.setter
-    def login_attempts(self, login_attempts):
+    def login_attempts(self, login_attempts) -> None:
+        """
+        Automatically updates database field on set.
+        """
         db_client.update_field(self.table_name, ('login_attempts', login_attempts), ('email', self.email))
         self._login_attempts = login_attempts
 
     @property
-    def full_name(self):
+    def full_name(self) -> str:
         return f"{self.first_name} {self.last_name}"
 
-    def set_password(self, password):
+    def set_password(self, password) -> None:
         self.password = self._encrypt_password(password)
 
-    def _encrypt_password(self, password: str):
+    def _encrypt_password(self, password: str) -> bytes:
+        """
+        Password encrytion method. We use the hashlib implementation of the PBKDF2 key-derivation function.
+        With 100000 iterations, the encryption takes ~100ms, which is perfectly acceptable for user authentication
+        and registration, and helps prevent against brute force attacks. 
+        """
         return hashlib.pbkdf2_hmac(
             'sha256',
             password.encode('utf-8'),
@@ -51,12 +63,15 @@ class User:
             100000
         )
 
-    def valid_password(self, password: str):
+    def valid_password(self, password: str) -> bool:
+        """
+        Checks the password entered by the user against the password stored in the database.
+        """
         encrypted_pw = self._encrypt_password(password)
         return encrypted_pw == self.password
 
-    def register_to_db(self):
-        db_client.query(
+    def register_to_db(self) -> Cursor:
+        return db_client.query(
             "INSERT INTO users VALUES(:email, :first_n, :last_n, :lock_time, :log_attempts, :salt, :pwd)",
             {
                 'email': self.email,
@@ -69,21 +84,27 @@ class User:
             }
         )
 
-    def remove_from_db(self):
-        db_client.query(
+    def remove_from_db(self) -> Cursor:
+        return db_client.query(
             "DELETE FROM users WHERE email = :email",
             {
                 'email': self.email
             }
         )
 
-    def email_available(self):
+    def email_available(self) -> bool:
+        """
+        After a User object has been instantiated, this method is called by the application to confirm the email is available.
+        """
         result = User.get_user(self.email)
         if result.fetchall(): return False
         else: return True
 
     @staticmethod
-    def get_user(email):
+    def get_user(email: str) -> Cursor:
+        """
+        Searches for a user in the database. Takes the user's email address as an argument.
+        """
         return db_client.query(
             "SELECT * FROM users WHERE email = :email",
             {
@@ -91,7 +112,10 @@ class User:
             })
 
     @classmethod
-    def from_email(cls, email):
+    def from_email(cls, email: str):
+        """
+        Create a User instance from data in our sql database. 
+        """
         result = User.get_user(email).fetchone()
         if result is None:
             raise InvalidEmail("User not found")

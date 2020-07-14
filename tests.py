@@ -1,9 +1,9 @@
 import pytest
-import user_app.config as config
+import pyuser.config as config
 import time
-from user_app.app import Application
-from user_app.user import User
-from user_app.exceptions import EmailInUse, InvalidPassword, AccountLocked, InvalidEmail
+from pyuser.app import Application
+from pyuser.user import User
+from pyuser.exceptions import EmailInUse, InvalidPassword, AccountLocked, InvalidEmail
 
 app = Application()
 email_address = 'luke.seabright@gmail.com'
@@ -51,3 +51,6 @@ def test_account_unlocked():
     test_account_locked()
     time.sleep(config.EMAIL_LOCK_TIME + 1)
     test_user_login()
+
+if __name__ == '__main__':
+    test_register_user()

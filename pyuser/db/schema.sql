@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS users (
-    email VARCHAR(20) NOT NULL,
+    email VARCHAR(20) NOT NULL PRIMARY KEY,
     first_name VARCHAR(20) NOT NULL,
     last_name VARCHAR(20) NOT NULL,
     lock_time TIME(0),
