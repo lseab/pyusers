@@ -1,5 +1,4 @@
 import sqlite3
-from sqlite3 import OperationalError
 from pyuser.config import TEST_DB_NAME
 from sqlite3.dbapi2 import Cursor
 
@@ -9,7 +8,6 @@ class Database:
     def __init__(self, db_name: str):
         self._db_connexion = sqlite3.connect(db_name)
         self._db_cursor = self._db_connexion.cursor()
-        self.create_tables()
 
     def query(self, query: str, params: dict = {}) -> Cursor:
         """
@@ -21,20 +19,6 @@ class Database:
         """
         with self._db_connexion:
             return self._db_cursor.execute(query, params)
-
-    def create_tables(self) -> None:
-        """
-        Create database schema.
-        """
-        with open('pyuser/db/schema.sql', 'r') as file:
-            tables_file = file.read()
-            commands = tables_file.split(';')
-
-            for command in commands:
-                try:
-                    self.query(command)
-                except OperationalError as e:
-                    print(f"Skipped command: {e.message}")
 
     def update_field(self, table: str, field: tuple, condition: tuple) -> Cursor:
         """
