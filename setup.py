@@ -7,7 +7,7 @@ setup(
       	author='Luke Seabright',
       	author_email='luke.seabright@gmail.com',
       	url='https://github.com/lseab/pyusers',
-      	packages=['pyuser', 'pyuser.db'],
+      	packages=['pyuser', 'pyuser.db', 'pyuser.settings'],
 		install_requires=[],
 		extras_require={'test': ['pytest==5.4.3']},
 )
