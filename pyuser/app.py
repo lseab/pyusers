@@ -1,6 +1,6 @@
 from pyuser.user import User
 from pyuser.exceptions import EmailInUse, InvalidPassword, AccountLocked
-from pyuser import config
+from pyuser.settings import config
 from email.message import EmailMessage
 import smtplib
 import time

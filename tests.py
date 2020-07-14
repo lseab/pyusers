@@ -1,5 +1,5 @@
 import pytest
-import pyuser.config as config
+import pyuser.settings.config as config
 import time
 from pyuser.app import Application
 from pyuser.user import User

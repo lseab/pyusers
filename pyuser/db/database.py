@@ -1,5 +1,5 @@
 import sqlite3
-from pyuser.config import TEST_DB_NAME
+from pyuser.settings.config import TEST_DB_NAME
 from sqlite3.dbapi2 import Cursor
 
 
