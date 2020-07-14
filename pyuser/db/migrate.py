@@ -1,9 +1,3 @@
-import sys
-import os.path
-
-path = os.path.abspath(os.path.join(os.path.dirname(__file__),'../..'))
-sys.path.append(path)
-
 from sqlite3 import OperationalError
 from pyuser.clients import db_client
 

@@ -1,6 +1,13 @@
-install:
+_before_install:
 	pip install --upgrade pip
-	pip install -r requirements.txt
+
+install:
+	make _before_install
+	pip install .
+
+install-test:
+	make _before_install
+	pip install .[test]
 
 migrate:
 	python pyuser/db/migrate.py
