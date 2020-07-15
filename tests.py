@@ -57,6 +57,4 @@ def test_account_unlocked():
     test_account_locked()
     time.sleep(config.EMAIL_LOCK_TIME + 1)
     test_user_login()
-
-if __name__ == '__main__':
-    test_register_user()
+    
