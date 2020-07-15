@@ -3,14 +3,20 @@ import pyuser.settings.config as config
 import time
 from pyuser.app import Application
 from pyuser.user import User
+from pyuser.db.migrate import create_tables, drop_tables
 from pyuser.exceptions import EmailInUse, InvalidPassword, AccountLocked, InvalidEmail
 
 app = Application()
 email_address = 'luke.seabright@gmail.com'
 password = 'AbletonRules'
 
-
-def test_register_user():
+@pytest.fixture(scope='function')
+def db_session():
+    drop_tables()
+    yield create_tables
+    
+def test_register_user(db_session):
+    db_session()
     try:
         user = User.from_email(email_address)
         app.delete_user(user)

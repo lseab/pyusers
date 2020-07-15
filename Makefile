@@ -13,4 +13,4 @@ migrate:
 	python pyuser/db/migrate.py
 
 tests:
-	pytest tests.py
+	export PYUSERS_ENV=test && pytest tests.py
