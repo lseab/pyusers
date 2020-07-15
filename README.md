@@ -34,10 +34,6 @@ Install the packages
 ```console
 (pyusers) $ make install-test
 ```
-Create the database
-```console
-(pyusers) $ make migrate
-```
 Run the tests with pytest
 ```console
 (pyusers) $ make tests
