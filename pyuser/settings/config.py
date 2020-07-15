@@ -2,10 +2,14 @@ import json
 import os
 import pathlib
 
+# 'PYUSERS_ENV' is an env variable allowing to switch environments
+# e.g PYUSERS_ENV=test in our test suite 
 config = os.environ
 env = config.get('PYUSERS_ENV')
 
 if env:
+    # There must be a corresponding {env_name}.json in the same folder for a given {env_name}
+    # e.g test.json for our test suite 
     this_file = pathlib.Path(__file__)
     this_dir = this_file.parent
     env_file = this_dir.joinpath(f'{env}.json')
